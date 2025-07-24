@@ -1,0 +1,27 @@
+.question-display{
+  margin-top:30px;
+}
+.question-display h2{
+  font-size: max(2vw, 24px);
+  font-weight: 600;
+  text-align: center;
+}
+.question-display-list{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* always 3 equal columns */
+  gap: 50px;  /* spacing between items */
+  row-gap: 50px;
+  margin: 30px auto;
+  max-width: 1200px; /* optional, keeps container nicely sized */
+}
+.question-item{
+  width: 100%;
+  margin: auto;
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px #00000015;
+  transition: 0.3s;
+  animation: fadeIn 1s;
+}
+/* .question-item img {
+  width: 50px;
+} */
