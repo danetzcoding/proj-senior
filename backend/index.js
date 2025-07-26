@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 const sendQuestionRoute = require('./routes/sendQuestion');
 app.use('/api', sendQuestionRoute);
-const mongoURI = 'mongodb+srv://danieldhyphen:codingdemon101@cluster0.49vpbxt.mongodb.net/danieldhyphen?retryWrites=true&w=majority&appName=Cluster0'; // generated URI
+const mongoURI = process.env.mongoURI;
 
 mongoose.connect(mongoURI)
   .then(() => console.log('MongoDB connected'))
