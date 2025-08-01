@@ -1,18 +1,7 @@
 import logo from './logo.png'
-import search_icon from './search_icon.png'
-import basket_icon from './basket_icon.png'
-import menu_1 from './menu_1.png'
-import menu_2 from './menu_2.png'
-import menu_3 from './menu_3.png'
-import food_1 from './food_1.png'
 
 export const assets = {
-    logo,
-    search_icon,
-    basket_icon,
-    menu_1,
-    menu_2,
-    menu_3
+    logo
 }
 
 export const question_list = [
