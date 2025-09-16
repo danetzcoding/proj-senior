@@ -1,5 +1,19 @@
 {
+  "name": "proj-senior",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "node index.js",
+    "build": "react-scripts build",
+    "heroku-postbuild": "npm install && npm run build"
+  },
   "dependencies": {
-    "dotenv": "^17.2.1"
+    "dotenv": "^17.2.1",
+    "express": "^4.18.2",
+    "mongoose": "^7.5.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1"
   }
 }
