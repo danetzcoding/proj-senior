@@ -1,3 +1,6 @@
+// ------------------------------
+// IMPORTS
+// ------------------------------
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -12,17 +15,6 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
-
-// ------------------------------
-// ROUTES: Custom Backend Functionality
-// ------------------------------
-const sendQuestionRoute = require('./routes/sendQuestion');
-if (sendQuestionRoute && sendQuestionRoute.stack) {
-  // Only mount if it's a valid router
-  app.use('/api', sendQuestionRoute);
-} else {
-  console.warn('Warning: sendQuestionRoute is not a valid Express router');
-}
 
 // ------------------------------
 // MONGODB CONNECTION
@@ -43,7 +35,7 @@ const eventSchema = new mongoose.Schema({
 
 const Event = mongoose.model('Event', eventSchema);
 
-// Get events for a month (query param ?month=YYYY-MM)
+// Get events for a month
 app.get('/events', async (req, res) => {
   const { month } = req.query;
   if (!month) return res.status(400).json({ message: 'Month query parameter is required (YYYY-MM)' });
@@ -78,6 +70,22 @@ app.delete('/events/:id', async (req, res) => {
     const deleted = await Event.findByIdAndDelete(id);
     if (deleted) res.json({ message: 'Event deleted' });
     else res.status(404).json({ message: 'Event not found' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// ------------------------------
+// SUBMIT QUESTION ENDPOINT (from frontend submitQuestion.jsx)
+// ------------------------------
+app.post('/api/submit', async (req, res) => {
+  const { question, email } = req.body;
+  if (!question || !email) return res.status(400).json({ message: 'Question and email are required' });
+
+  try {
+    // TODO: handle logic like saving to DB or sending an email
+    console.log('Question received:', question, 'from', email);
+    res.status(200).json({ message: 'Question submitted successfully' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
