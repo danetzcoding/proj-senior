@@ -9,14 +9,17 @@ const Calendar = () => {
   const [newEvent, setNewEvent] = useState('');
   const [adminAccess, setAdminAccess] = useState(false);
 
+  const API_URL = import.meta.env.VITE_API_URL; // <-- Environment variable
+
   const formatDate = (date) => date.toISOString().split('T')[0];
 
+  // Fetch events for the current month
   useEffect(() => {
     const fetchMonthEvents = async () => {
       const year = currentDate.getFullYear();
       const month = String(currentDate.getMonth() + 1).padStart(2, '0');
       try {
-        const res = await fetch(`http://localhost:5000/events?month=${year}-${month}`);
+        const res = await fetch(`${API_URL}/events?month=${year}-${month}`);
         const data = await res.json();
 
         const grouped = {};
@@ -32,14 +35,15 @@ const Calendar = () => {
     };
 
     fetchMonthEvents();
-  }, [currentDate]);
+  }, [currentDate, API_URL]);
 
+  // Add new event
   const handleAddEvent = async () => {
     if (!newEvent.trim()) return;
     const dateStr = formatDate(selectedDate);
 
     try {
-      const res = await fetch('http://localhost:5000/events', {
+      const res = await fetch(`${API_URL}/events`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ date: dateStr, description: newEvent }),
@@ -56,9 +60,10 @@ const Calendar = () => {
     }
   };
 
+  // Delete event
   const handleDeleteEvent = async (eventId, eventDate) => {
     try {
-      const res = await fetch(`http://localhost:5000/events/${eventId}`, {
+      const res = await fetch(`${API_URL}/events/${eventId}`, {
         method: 'DELETE',
       });
       if (res.ok) {
@@ -84,13 +89,8 @@ const Calendar = () => {
     const startDay = firstDay.getDay();
     const totalDays = lastDay.getDate();
 
-    for (let i = 0; i < startDay; i++) {
-      days.push(null);
-    }
-
-    for (let i = 1; i <= totalDays; i++) {
-      days.push(new Date(year, month, i));
-    }
+    for (let i = 0; i < startDay; i++) days.push(null);
+    for (let i = 1; i <= totalDays; i++) days.push(new Date(year, month, i));
 
     return days;
   };
@@ -103,11 +103,8 @@ const Calendar = () => {
 
   const handleAdminLogin = () => {
     const password = prompt("Enter admin password:");
-    if (password === 'admin123') {
-      setAdminAccess(true);
-    } else {
-      alert("Incorrect password");
-    }
+    if (password === 'admin123') setAdminAccess(true);
+    else alert("Incorrect password");
   };
 
   return (
@@ -168,7 +165,7 @@ const Calendar = () => {
 
       <div className="calendar-events">
         <h2>Events on {formatDate(selectedDate)}</h2>
-        {events[formatDate(selectedDate)] && events[formatDate(selectedDate)].length > 0 ? (
+        {events[formatDate(selectedDate)]?.length > 0 ? (
           <ul>
             {events[formatDate(selectedDate)].map((e) => (
               <li key={e._id}>

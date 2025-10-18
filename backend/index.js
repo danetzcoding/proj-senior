@@ -1,4 +1,3 @@
-// ------------------------------
 // IMPORTS
 // ------------------------------
 const express = require('express');
@@ -13,7 +12,27 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// ------------------------------
+// CORS CONFIGURATION
+// ------------------------------
+const allowedOrigins = [
+  'http://localhost:5173', // Vite dev server default
+  'https://my-frontend.onrender.com' // replace with your Render frontend URL
+];
+
+app.use(cors({
+  origin: function(origin, callback){
+    // allow requests with no origin (like Postman)
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){
+      const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true
+}));
+
 app.use(express.json());
 
 // ------------------------------
@@ -76,14 +95,13 @@ app.delete('/events/:id', async (req, res) => {
 });
 
 // ------------------------------
-// SUBMIT QUESTION ENDPOINT (from frontend submitQuestion.jsx)
+// SUBMIT QUESTION ENDPOINT
 // ------------------------------
 app.post('/api/submit', async (req, res) => {
   const { question, email } = req.body;
   if (!question || !email) return res.status(400).json({ message: 'Question and email are required' });
 
   try {
-    // TODO: handle logic like saving to DB or sending an email
     console.log('Question received:', question, 'from', email);
     res.status(200).json({ message: 'Question submitted successfully' });
   } catch (err) {
