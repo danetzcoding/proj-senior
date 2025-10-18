@@ -8,6 +8,8 @@ const SubmitQuestion = () => {
   const [status, setStatus] = useState('');
   const fileInputRef = useRef(null);
 
+  const API_URL = import.meta.env.VITE_API_URL; // <-- Environment variable
+
   const handleImageChange = (e) => {
     const newFiles = Array.from(e.target.files);
     const newPreviews = newFiles.map((file) => ({
@@ -25,7 +27,7 @@ const SubmitQuestion = () => {
       formData.append('question', question);
       images.forEach((img) => formData.append('images', img.file));
 
-      const response = await fetch('http://localhost:5000/api/send-question', {
+      const response = await fetch(`${API_URL}/api/send-question`, {
         method: 'POST',
         body: formData,
       });
@@ -54,7 +56,6 @@ const SubmitQuestion = () => {
     });
   };
 
-  // build a newline-separated list of filenames
   const filenames = images.map((img) => img.file.name).join('\n');
 
   return (
