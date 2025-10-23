@@ -109,16 +109,16 @@ app.post('/api/submit', async (req, res) => {
   }
 });
 
-// ------------------------------
-// SERVE REACT FRONTEND
-// ------------------------------
-const buildPath = path.join(__dirname, 'build');
-app.use(express.static(buildPath));
+// // ------------------------------
+// // SERVE REACT FRONTEND
+// // ------------------------------
+// const buildPath = path.join(__dirname, 'build');
+// app.use(express.static(buildPath));
 
-// Only serve React index.html for routes not starting with /api
-app.get(/^\/(?!api).*/, (req, res) => {
-  res.sendFile(path.join(buildPath, 'index.html'));
-});
+// // Only serve React index.html for routes not starting with /api
+// app.get(/^\/(?!api).*/, (req, res) => {
+//   res.sendFile(path.join(buildPath, 'index.html'));
+// });
 
 // ------------------------------
 // START SERVER
