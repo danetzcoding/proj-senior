@@ -8,7 +8,7 @@ const SubmitQuestion = () => {
   const [status, setStatus] = useState('');
   const fileInputRef = useRef(null);
 
-  const API_URL = import.meta.env.VITE_API_URL; // <-- Environment variable
+  const API_URL = import.meta.env.VITE_API_URL; // Environment variable
 
   const handleImageChange = (e) => {
     const newFiles = Array.from(e.target.files);
@@ -27,7 +27,8 @@ const SubmitQuestion = () => {
       formData.append('question', question);
       images.forEach((img) => formData.append('images', img.file));
 
-      const response = await fetch(`${API_URL}/api/send-question`, {
+      // ✅ Updated fetch URL to match backend
+      const response = await fetch(`${API_URL}/api/submit`, {
         method: 'POST',
         body: formData,
       });

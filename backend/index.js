@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 5000;
 // ------------------------------
 const allowedOrigins = [
   'http://localhost:5173', // Vite dev server default
-  'https://my-frontend.onrender.com' // replace with your Render frontend URL
+  'https://proj-senior-1.onrender.com' // replace with your Render frontend URL
 ];
 
 app.use(cors({
